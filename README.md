@@ -2,7 +2,7 @@
 
 This is the official website repository for **Flux**, a minimal and evolving JavaScript package manager. The site serves as the **central hub** for Flux documentation, community updates, package browsing, and developer onboarding.
 
-🌐 **Live Site**: [Coming Soon]  
+🌐 **Live Site**: [flux.gautamsuthar.in](https://flux.gautamsuthar.in)
 📦 **Flux CLI Repo**: [callmegautam/flux](https://github.com/callmegautam/flux)
 
 ---
