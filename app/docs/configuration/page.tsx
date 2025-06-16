@@ -9,40 +9,78 @@ export default function QuickStartPage() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Quick Start</h1>
+                <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">Configuration</h1>
                 <p className="mt-4 text-xl text-muted-foreground">
-                    Get up and running with Flux in minutes with this quick start guide.
+                    Customize how Flux works by editing your <code>flux.config.js</code>. This file gives you full
+                    control over behavior like workspaces, aliases, scripts, caching, and more.
                 </p>
             </div>
 
             <div className="space-y-4">
-                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Prerequisites</h2>
-                <p>Before you begin, make sure you have:</p>
-                <ul className="ml-6 list-disc [&>li]:mt-2">
-                    <li>
-                        <Link href="/docs/installation" className="text-primary hover:underline">
-                            Installed Flux
-                        </Link>{" "}
-                        on your system
-                    </li>
-                    <li>Node.js 16.0.0 or later</li>
-                    <li>Basic familiarity with package managers and the command line</li>
-                </ul>
-            </div>
-
-            <div className="space-y-4">
-                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Creating a New Project</h2>
+                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Default Configuration</h2>
                 <p>
-                    Let's start by creating a new project with Flux. Open your terminal and run the following command:
+                    When you run <code>flux init</code>, Flux creates a <code>flux.config.js</code> with default values:
                 </p>
                 <div className="relative rounded-md bg-muted p-4">
                     <pre className="font-mono text-sm">
-                        <code>flux init my-project</code>
+                        <code>{`// flux.config.js
+module.exports = {
+  workspaces: [],
+  aliases: {},
+  cache: true,
+  scripts: {},
+};                      `}</code>
                     </pre>
                     <button
                         className="absolute right-2 top-2 rounded-md p-1 hover:bg-muted-foreground/20"
                         onClick={() => {
-                            navigator.clipboard.writeText("flux init my-project");
+                            navigator.clipboard.writeText(`module.exports = {
+  workspaces: [],
+  aliases: {},
+  cache: true,
+  scripts: {},
+};  `);
+                        }}
+                    >
+                        <span className="sr-only">Copy code</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-copy"
+                        >
+                            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2" />
+                        </svg>
+                    </button>
+                </div>
+                <p>This file is required for advanced usage, and optional for simple single-package projects.</p>
+            </div>
+
+            <div className="space-y-4">
+                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Workspaces</h2>
+                <p>Flux supports monorepos out of the box. To enable workspaces, define them in your config:</p>
+                <div className="relative rounded-md bg-muted p-4">
+                    <pre className="font-mono text-sm">
+                        <code>{`// flux.config.js
+module.exports = {
+  workspaces: ['apps/*', 'packages/*'],
+};
+`}</code>
+                    </pre>
+                    <button
+                        className="absolute right-2 top-2 rounded-md p-1 hover:bg-muted-foreground/20"
+                        onClick={() => {
+                            navigator.clipboard.writeText(`module.exports = {
+  workspaces: ['apps/*', 'packages/*'],
+};
+`);
                         }}
                     >
                         <span className="sr-only">Copy code</span>
@@ -64,18 +102,18 @@ export default function QuickStartPage() {
                     </button>
                 </div>
                 <p>
-                    This command creates a new directory called <code>my-project</code> with a basic project structure
-                    and a default <code>flux.config.js</code> file.
+                    This tells Flux to treat directories like <code>apps/web</code> or <code>packages/core</code> as
+                    individual packages with their own <code>package.json</code>.
                 </p>
-                <p>Navigate to your new project directory:</p>
+                <p>Run scripts inside a specific workspace:</p>
                 <div className="relative rounded-md bg-muted p-4">
                     <pre className="font-mono text-sm">
-                        <code>cd my-project</code>
+                        <code>{`flux run build --workspace=packages/core`}</code>
                     </pre>
                     <button
                         className="absolute right-2 top-2 rounded-md p-1 hover:bg-muted-foreground/20"
                         onClick={() => {
-                            navigator.clipboard.writeText("cd my-project");
+                            navigator.clipboard.writeText(`flux run build --workspace=packages/core`);
                         }}
                     >
                         <span className="sr-only">Copy code</span>
@@ -96,30 +134,35 @@ export default function QuickStartPage() {
                         </svg>
                     </button>
                 </div>
-            </div>
-
-            <div className="space-y-4">
-                <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">Project Structure</h2>
-                <p>
-                    The <code>flux init</code> command creates the following files and directories:
-                </p>
+                <p>Run scripts across all workspaces:</p>
                 <div className="relative rounded-md bg-muted p-4">
                     <pre className="font-mono text-sm">
-                        <code>
-                            {`my-project/
-├── node_modules/
-├── src/
-│   └── index.js
-├── flux.config.js
-├── package.json
-└── README.md`}
-                        </code>
+                        <code>{`flux run test --workspaces`}</code>
                     </pre>
+                    <button
+                        className="absolute right-2 top-2 rounded-md p-1 hover:bg-muted-foreground/20"
+                        onClick={() => {
+                            navigator.clipboard.writeText(`flux run test --workspaces`);
+                        }}
+                    >
+                        <span className="sr-only">Copy code</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-copy"
+                        >
+                            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                            <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h2" />
+                        </svg>
+                    </button>
                 </div>
-                <p>
-                    The <code>flux.config.js</code> file contains the configuration for your Flux project. You can
-                    customize this file to suit your needs.
-                </p>
             </div>
 
             <div className="space-y-4">
