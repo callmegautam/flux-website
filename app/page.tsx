@@ -62,7 +62,9 @@ export default function Home() {
                                 </Link>
                             </Button>
                             <Button size="lg" variant="outline">
-                                View on GitHub
+                                <Link href={"https://github.com/callmegautam/flux"} target="_blank">
+                                    View on GitHub
+                                </Link>
                             </Button>
                         </motion.div>
                     </motion.div>
@@ -100,7 +102,9 @@ export default function Home() {
                 <div className="container">
                     <div className="mx-auto max-w-2xl text-center">
                         <motion.div initial="hidden" animate="visible" variants={fadeIn}>
-                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Why choose Flux?</h2>
+                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                                Why choose Flux?
+                            </h2>
                             <p className="mt-4 text-muted-foreground">
                                 Designed from the ground up for speed, simplicity, and developer experience.
                             </p>
@@ -119,8 +123,8 @@ export default function Home() {
                             </div>
                             <h3 className="mt-6 text-xl font-semibold">Lightning Fast</h3>
                             <p className="mt-2 text-muted-foreground">
-                                Up to 5x faster than npm and 2x faster than yarn with parallel downloads and optimized
-                                caching.
+                                Up to 5x faster than npm and 2x faster than yarn with parallel downloads and
+                                optimized caching.
                             </p>
                         </motion.div>
                         <motion.div variants={fadeIn} className="flex flex-col items-center text-center">
@@ -129,7 +133,8 @@ export default function Home() {
                             </div>
                             <h3 className="mt-6 text-xl font-semibold">Smart Caching</h3>
                             <p className="mt-2 text-muted-foreground">
-                                Intelligent caching system that reduces redundant downloads and speeds up installations.
+                                Intelligent caching system that reduces redundant downloads and speeds up
+                                installations.
                             </p>
                         </motion.div>
                         <motion.div variants={fadeIn} className="flex flex-col items-center text-center">
@@ -138,7 +143,8 @@ export default function Home() {
                             </div>
                             <h3 className="mt-6 text-xl font-semibold">Zero Config</h3>
                             <p className="mt-2 text-muted-foreground">
-                                Works out of the box with sensible defaults and minimal configuration required.
+                                Works out of the box with sensible defaults and minimal configuration
+                                required.
                             </p>
                         </motion.div>
                     </motion.div>
@@ -149,7 +155,9 @@ export default function Home() {
             <section className="py-20 bg-muted/50">
                 <div className="container">
                     <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How does Flux compare?</h2>
+                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                            How does Flux compare?
+                        </h2>
                         <p className="mt-4 text-muted-foreground">
                             See how Flux stacks up against other popular package managers.
                         </p>
@@ -166,7 +174,8 @@ export default function Home() {
                                     <div className="p-6">
                                         <h3 className="text-xl font-semibold">Flux vs npm</h3>
                                         <p className="mt-2 text-muted-foreground">
-                                            Flux outperforms npm in speed, disk usage, and developer experience.
+                                            Flux outperforms npm in speed, disk usage, and developer
+                                            experience.
                                         </p>
                                         <div className="mt-6 space-y-4">
                                             <div className="flex items-start gap-2">
@@ -174,7 +183,8 @@ export default function Home() {
                                                 <div>
                                                     <p className="font-medium">5x faster installation</p>
                                                     <p className="text-sm text-muted-foreground">
-                                                        Parallel downloads and optimized dependency resolution.
+                                                        Parallel downloads and optimized dependency
+                                                        resolution.
                                                     </p>
                                                 </div>
                                             </div>
@@ -183,7 +193,8 @@ export default function Home() {
                                                 <div>
                                                     <p className="font-medium">40% less disk space</p>
                                                     <p className="text-sm text-muted-foreground">
-                                                        Efficient storage of packages with content-addressable storage.
+                                                        Efficient storage of packages with content-addressable
+                                                        storage.
                                                     </p>
                                                 </div>
                                             </div>
@@ -192,7 +203,8 @@ export default function Home() {
                                                 <div>
                                                     <p className="font-medium">Built-in security features</p>
                                                     <p className="text-sm text-muted-foreground">
-                                                        Automatic vulnerability scanning and license compliance.
+                                                        Automatic vulnerability scanning and license
+                                                        compliance.
                                                     </p>
                                                 </div>
                                             </div>
@@ -232,7 +244,8 @@ export default function Home() {
                                                 <div>
                                                     <p className="font-medium">Better monorepo support</p>
                                                     <p className="text-sm text-muted-foreground">
-                                                        First-class support for monorepos without additional tools.
+                                                        First-class support for monorepos without additional
+                                                        tools.
                                                     </p>
                                                 </div>
                                             </div>
@@ -245,7 +258,8 @@ export default function Home() {
                                     <div className="p-6">
                                         <h3 className="text-xl font-semibold">Flux vs pnpm</h3>
                                         <p className="mt-2 text-muted-foreground">
-                                            Flux builds on pnpm's innovations with improved developer experience.
+                                            Flux builds on pnpm's innovations with improved developer
+                                            experience.
                                         </p>
                                         <div className="mt-6 space-y-4">
                                             <div className="flex items-start gap-2">
@@ -271,7 +285,8 @@ export default function Home() {
                                                 <div>
                                                     <p className="font-medium">Advanced plugin system</p>
                                                     <p className="text-sm text-muted-foreground">
-                                                        Extensible architecture with a rich ecosystem of plugins.
+                                                        Extensible architecture with a rich ecosystem of
+                                                        plugins.
                                                     </p>
                                                 </div>
                                             </div>
@@ -289,9 +304,12 @@ export default function Home() {
                 <div className="container">
                     <div className="mx-auto max-w-4xl rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-background p-8 md:p-12">
                         <div className="mx-auto max-w-2xl text-center">
-                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ready to get started?</h2>
+                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                                Ready to get started?
+                            </h2>
                             <p className="mt-4 text-muted-foreground">
-                                Join thousands of developers who are already using Flux to speed up their workflows.
+                                Join thousands of developers who are already using Flux to speed up their
+                                workflows.
                             </p>
                             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <Button size="lg" asChild>
