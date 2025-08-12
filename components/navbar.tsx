@@ -11,7 +11,7 @@ import { useTheme } from "next-themes";
 
 const navItems = [
     { name: "Home", path: "/" },
-    { name: "Documentation", path: "/docs" },
+    { name: "Documentation", path: "https://fluxdocs.gautamsuthar.in/" },
     // { name: "Packages", path: "/packages" },
     // { name: "Blog", path: "/blog" },
 ];

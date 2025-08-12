@@ -57,7 +57,7 @@ export default function Home() {
                             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                         >
                             <Button size="lg" asChild>
-                                <Link href="/docs">
+                                <Link href="https://fluxdocs.gautamsuthar.in/">
                                     Get Started <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
@@ -313,7 +313,7 @@ export default function Home() {
                             </p>
                             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                                 <Button size="lg" asChild>
-                                    <Link href="/docs">
+                                    <Link href="https://fluxdocs.gautamsuthar.in/">
                                         Get Started <ArrowRight className="ml-2 h-4 w-4" />
                                     </Link>
                                 </Button>
