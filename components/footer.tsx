@@ -1,11 +1,11 @@
-import Link from "next/link"
-import { Zap, Github, Twitter } from "lucide-react"
+import Link from "next/link";
+import { Zap, Github, Twitter } from "lucide-react";
 
 export default function Footer() {
-  return (
-    <footer className="border-t bg-background/50 backdrop-blur-sm">
-      <div className="container py-10">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+    return (
+        <footer className=" bg-background/50 backdrop-blur-sm">
+            <div className="container py-10">
+                {/* <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col gap-2">
             <Link href="/" className="flex items-center gap-2">
               <Zap className="h-6 w-6 text-primary" />
@@ -100,13 +100,13 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-        </div>
-        <div className="mt-10 border-t pt-6">
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Flux. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
-  )
+        </div> */}
+                <div className=" border-t pt-6">
+                    <p className="text-center text-sm text-muted-foreground">
+                        &copy; {new Date().getFullYear()} Flux. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    );
 }
