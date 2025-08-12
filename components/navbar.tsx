@@ -12,8 +12,8 @@ import { useTheme } from "next-themes";
 const navItems = [
     { name: "Home", path: "/" },
     { name: "Documentation", path: "/docs" },
-    { name: "Packages", path: "/packages" },
-    { name: "Blog", path: "/blog" },
+    // { name: "Packages", path: "/packages" },
+    // { name: "Blog", path: "/blog" },
 ];
 
 export default function Navbar() {
@@ -70,14 +70,14 @@ export default function Navbar() {
                         <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                         <span className="sr-only">Toggle theme</span>
                     </Button>
-                    <div className="hidden md:flex gap-2">
+                    {/* <div className="hidden md:flex gap-2">
                         <Button variant="ghost" asChild>
                             <Link href="/login">Login</Link>
                         </Button>
                         <Button asChild>
                             <Link href="/register">Sign Up</Link>
                         </Button>
-                    </div>
+                    </div> */}
                     <Sheet>
                         <SheetTrigger asChild className="md:hidden">
                             <Button variant="ghost" size="icon">
@@ -97,14 +97,14 @@ export default function Navbar() {
                                         {item.name}
                                     </Link>
                                 ))}
-                                <div className="flex flex-col gap-2 mt-4">
+                                {/* <div className="flex flex-col gap-2 mt-4">
                                     <Button variant="outline" asChild>
                                         <Link href="/login">Login</Link>
                                     </Button>
                                     <Button asChild>
                                         <Link href="/register">Sign Up</Link>
                                     </Button>
-                                </div>
+                                </div> */}
                             </div>
                         </SheetContent>
                     </Sheet>
