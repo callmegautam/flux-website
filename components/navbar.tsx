@@ -12,7 +12,7 @@ import { useTheme } from "next-themes";
 const navItems = [
     { name: "Home", path: "/" },
     { name: "Documentation", path: "https://fluxdocs.gautamsuthar.in/" },
-    // { name: "Packages", path: "/packages" },
+    { name: "Download", path: "/download" },
     // { name: "Blog", path: "/blog" },
 ];
 
