@@ -1,330 +1,302 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Package, Zap, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CommandLine } from '@/components/command-line';
+import { Masthead } from '@/components/masthead';
+import { NavRail } from '@/components/nav-rail';
+import { Label, Leader, Section, TextLink, Wrap } from '@/components/primitives';
+import { SiteFooter } from '@/components/site-footer';
+import {
+  cachePaths,
+  commands,
+  envVars,
+  limitations,
+  roadmap,
+  site,
+  targets,
+} from '@/lib/site';
 
 export default function Home() {
-    const [tab, setTab] = useState("npm");
+  return (
+    <>
+      <div id="top">
+        <Masthead />
+      </div>
 
-    const fadeIn = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.6 },
-        },
-    };
+      <NavRail />
 
-    const staggerContainer = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.2,
-            },
-        },
-    };
+      {/* ------------------------------------------------ opening statement */}
+      <section>
+        <Wrap className="grid gap-x-10 gap-y-8 py-16 md:grid-cols-[7rem_1fr] md:py-20">
+          <p className="tag md:sticky md:top-16 md:self-start">abstract</p>
 
-    return (
-        <div className="flex flex-col">
-            {/* Hero Section */}
-            <section className="relative overflow-hidden py-20 md:py-32">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background" />
-                <div className="container relative z-10">
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={staggerContainer}
-                        className="mx-auto max-w-3xl text-center"
-                    >
-                        <motion.div variants={fadeIn}>
-                            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                                The <span className="text-primary">modern</span> package manager
-                            </h1>
-                        </motion.div>
-                        <motion.div variants={fadeIn}>
-                            <p className="mt-6 text-lg text-muted-foreground md:text-xl">
-                                Flux is a fast, simple, and innovative package manager designed for modern web
-                                development workflows.
-                            </p>
-                        </motion.div>
-                        <motion.div
-                            variants={fadeIn}
-                            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-                        >
-                            <Button size="lg" asChild>
-                                <Link href="https://fluxdocs.gautamsuthar.in/">
-                                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                                </Link>
-                            </Button>
-                            <Button size="lg" variant="outline">
-                                <Link href={"https://github.com/callmegautam/flux"} target="_blank">
-                                    View on GitHub
-                                </Link>
-                            </Button>
-                        </motion.div>
-                    </motion.div>
+          <div>
+            <p className="max-w-[38ch] font-serif text-[1.6rem] leading-[1.35] tracking-[-0.01em] sm:text-[2rem]">
+              Flux pulls packages off the npm registry, unpacks them into{' '}
+              <span className="font-mono text-[0.78em] text-red">node_modules</span>, and records
+              them in your <span className="font-mono text-[0.78em] text-red">package.json</span>.
+            </p>
+
+            <p className="mt-7 max-w-[56ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+              Ten commands cover the entire surface. There is no plugin system, no config file, and
+              nothing to learn past what you already know from npm. It runs on Node 18 or later, or
+              as a single binary with no runtime at all.
+            </p>
+
+            <div className="mt-10 max-w-[34rem]">
+              <Label>install it</Label>
+              <CommandLine command={`npm install -g ${site.pkg}`} />
+            </div>
+
+            <aside className="mt-12 max-w-[52ch] border-l-2 border-red pl-6">
+              <p className="tag mb-2 text-red">caution</p>
+              <p className="font-serif text-[1rem] italic leading-[1.65] text-ink-soft">
+                Flux is alpha software and is not ready for production. It installs direct
+                dependencies only, with no dependency tree and no lockfile. Read{' '}
+                <TextLink href="#limits">§ 04</TextLink> before you depend on it.
+              </p>
+            </aside>
+          </div>
+        </Wrap>
+      </section>
+
+      {/* ------------------------------------------------------ specimen strip */}
+      <div className="border-y border-ink bg-paper-deep">
+        <Wrap className="py-5">
+          <p className="tag mb-3">the complete command set</p>
+          <p className="font-mono text-[0.95rem] leading-[2] tracking-[-0.01em] sm:text-[1.15rem]">
+            {commands.map((cmd, i) => (
+              <span key={cmd.name}>
+                {i > 0 ? <span className="mx-2.5 text-red sm:mx-3.5">·</span> : null}
+                {cmd.name}
+              </span>
+            ))}
+          </p>
+        </Wrap>
+      </div>
+
+      <main>
+        {/* ------------------------------------------------------- 01 install */}
+        <Section
+          id="install"
+          n="01"
+          title="Two ways in."
+          lede="Take the npm package if Node is already on the machine. Take the standalone binary if you would rather not carry a runtime around."
+        >
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-x-14">
+            <div>
+              <Label>a · global npm package</Label>
+              <CommandLine command={`npm install -g ${site.pkg}`} />
+              <CommandLine command={`npx ${site.pkg} --help`} />
+              <p className="mt-4 max-w-[46ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
+                Requires Node 18 or later. To update, run the same command again. To remove it, run{' '}
+                <code className="font-mono text-[0.85em] text-ink">npm uninstall -g {site.pkg}</code>
+                .
+              </p>
+            </div>
+
+            <div>
+              <Label>b · standalone binary</Label>
+              <CommandLine command="curl -fsSL https://raw.githubusercontent.com/callmegautam/flux/main/install.sh | sh" />
+              <CommandLine
+                sigil=">"
+                command="irm https://raw.githubusercontent.com/callmegautam/flux/main/install.ps1 | iex"
+              />
+              <p className="mt-4 max-w-[46ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
+                Self contained, no Node needed. Linux and macOS take the curl script, Windows
+                PowerShell takes <code className="font-mono text-[0.85em] text-ink">irm</code>. The
+                Windows install is per user and needs no administrator rights. To remove it, delete
+                the binary.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-x-14">
+            <div>
+              <Label>prebuilt targets</Label>
+              <ul>
+                {targets.map((t) => (
+                  <li key={t.id} className="border-b border-rule py-3">
+                    <div className="flex items-baseline">
+                      <code className="font-mono text-[0.85rem] text-ink">{t.id}</code>
+                      <Leader />
+                      <span className="font-serif text-[0.95rem] text-ink-soft">
+                        {t.platform}, {t.arch}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 max-w-[48ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
+                Every{' '}
+                <TextLink href={site.links.releases} external>
+                  release
+                </TextLink>{' '}
+                carries these binaries next to a{' '}
+                <code className="font-mono text-[0.85em] text-ink">SHA256SUMS</code> file, which
+                both install scripts verify for you.
+              </p>
+            </div>
+
+            <div>
+              <Label>environment</Label>
+              <dl>
+                {envVars.map((v) => (
+                  <div key={v.name} className="border-b border-rule py-3.5">
+                    <dt className="font-mono text-[0.82rem] text-red">{v.name}</dt>
+                    <dd className="mt-1.5 max-w-[44ch] font-serif text-[0.98rem] leading-[1.6] text-ink-soft">
+                      {v.note}{' '}
+                      <span className="text-ink-faint">
+                        Defaults to <span className="font-mono text-[0.85em]">{v.fallback}</span>.
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </Section>
+
+        {/* ------------------------------------------------------ 02 commands */}
+        <Section
+          id="commands"
+          n="02"
+          title="Ten commands, and that is all of them."
+          lede="Listed roughly in the order you reach for them. Every alias is shown on the right. Run flux --help for the full set of flags."
+        >
+          <ol>
+            {commands.map((cmd, i) => (
+              <li
+                key={cmd.name}
+                className="grid gap-x-6 border-b border-rule py-5 md:grid-cols-[2.5rem_1fr]"
+              >
+                <span className="hidden font-mono text-[0.75rem] leading-[1.9] text-ink-faint md:block">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                <div>
+                  <div className="flex items-baseline">
+                    <code className="whitespace-nowrap font-mono text-[1rem] font-medium text-ink">
+                      {cmd.name}
+                      {cmd.args ? (
+                        <span className="font-normal text-ink-faint"> {cmd.args}</span>
+                      ) : null}
+                    </code>
+                    <Leader />
+                    <span className="whitespace-nowrap font-mono text-[0.72rem] text-ink-faint">
+                      {cmd.aliases.join(' , ')}
+                    </span>
+                  </div>
+                  <p className="mt-2 max-w-[62ch] font-serif text-[1rem] leading-[1.6] text-ink-soft">
+                    {cmd.desc}
+                  </p>
                 </div>
+              </li>
+            ))}
+          </ol>
 
-                {/* Terminal Demo */}
-                <motion.div
-                    initial={{ opacity: 0, y: 0 }}
-                    animate={{ opacity: 1, y: 40 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
-                    className="container mt-16"
-                >
-                    <div className="mx-auto max-w-4xl overflow-hidden rounded-lg border bg-card shadow-2xl ">
-                        <div className="flex items-center gap-1.5 border-b px-4 py-3">
-                            <div className="h-3 w-3 rounded-full bg-red-500" />
-                            <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                            <div className="h-3 w-3 rounded-full bg-green-500" />
-                            <div className="ml-4 text-sm font-medium">Terminal</div>
-                        </div>
-                        <div className="bg-black p-4 font-mono text-sm text-green-400">
-                            <p className="mb-2">$ flux install express</p>
-                            <p className="mb-1">Resolving dependencies...</p>
-                            <p className="mb-1">Adding express@18.2.0</p>
-                            <p className="mb-1">Packages installed in 0.8s</p>
-                            <p className="">
-                                $<span className="animate-pulse duration-700"> _</span>
-                            </p>
-                        </div>
-                    </div>
-                </motion.div>
-            </section>
+          <p className="mt-8 max-w-[56ch] border-l-2 border-red pl-6 font-serif text-[1rem] leading-[1.65] text-ink-soft">
+            Pass <code className="font-mono text-[0.85em] text-ink">--flux</code> to{' '}
+            <code className="font-mono text-[0.85em] text-ink">install</code> to resolve tarballs
+            through the Flux registry instead of npm.
+          </p>
+        </Section>
 
-            {/* Features Section */}
-            <section className="py-20">
-                <div className="container">
-                    <div className="mx-auto max-w-2xl text-center">
-                        <motion.div initial="hidden" animate="visible" variants={fadeIn}>
-                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                                Why choose Flux?
-                            </h2>
-                            <p className="mt-4 text-muted-foreground">
-                                Designed from the ground up for speed, simplicity, and developer experience.
-                            </p>
-                        </motion.div>
-                    </div>
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                        variants={staggerContainer}
-                        className="mx-auto mt-16 grid max-w-5xl gap-8 md:grid-cols-3"
-                    >
-                        <motion.div variants={fadeIn} className="flex flex-col items-center text-center">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                                <Zap className="h-8 w-8 text-primary" />
-                            </div>
-                            <h3 className="mt-6 text-xl font-semibold">Lightning Fast</h3>
-                            <p className="mt-2 text-muted-foreground">
-                                Up to 5x faster than npm and 2x faster than yarn with parallel downloads and
-                                optimized caching.
-                            </p>
-                        </motion.div>
-                        <motion.div variants={fadeIn} className="flex flex-col items-center text-center">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                                <Package className="h-8 w-8 text-primary" />
-                            </div>
-                            <h3 className="mt-6 text-xl font-semibold">Smart Caching</h3>
-                            <p className="mt-2 text-muted-foreground">
-                                Intelligent caching system that reduces redundant downloads and speeds up
-                                installations.
-                            </p>
-                        </motion.div>
-                        <motion.div variants={fadeIn} className="flex flex-col items-center text-center">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                                <RefreshCw className="h-8 w-8 text-primary" />
-                            </div>
-                            <h3 className="mt-6 text-xl font-semibold">Zero Config</h3>
-                            <p className="mt-2 text-muted-foreground">
-                                Works out of the box with sensible defaults and minimal configuration
-                                required.
-                            </p>
-                        </motion.div>
-                    </motion.div>
+        {/* -------------------------------------------------------- 03 config */}
+        <Section
+          id="config"
+          n="03"
+          title="One cache directory. Nothing else to configure."
+          lede="Downloaded tarballs are kept per user, in the place your platform expects them."
+        >
+          <div className="max-w-[46rem]">
+            <Label>cache location</Label>
+            <ul>
+              {cachePaths.map((row) => (
+                <li key={row.platform} className="border-b border-rule py-3">
+                  <div className="flex flex-wrap items-baseline">
+                    <span className="font-serif text-[1rem] text-ink">{row.platform}</span>
+                    <Leader />
+                    <code className="font-mono text-[0.8rem] text-ink-soft">{row.path}</code>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-5 max-w-[52ch] font-serif text-[1rem] leading-[1.65] text-ink-soft">
+              Set <code className="font-mono text-[0.85em] text-red">FLUX_CACHE_DIR</code> to put
+              them somewhere else, and run{' '}
+              <code className="font-mono text-[0.85em] text-ink">flux clear</code> to empty the
+              cache.
+            </p>
+          </div>
+        </Section>
+
+        {/* --------------------------------------------------- 04 limitations */}
+        <Section
+          id="limits"
+          n="04"
+          title="What Flux does not do yet."
+          lede="Written out plainly, so you can decide whether that is fine for what you are building."
+        >
+          <ol className="max-w-[62rem]">
+            {limitations.map((item, i) => (
+              <li
+                key={item.title}
+                className="grid gap-x-6 gap-y-2 border-b border-rule py-6 md:grid-cols-[2.5rem_1fr]"
+              >
+                <span className="font-mono text-[0.75rem] leading-[1.9] text-red">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 className="font-serif text-[1.25rem] leading-snug tracking-[-0.01em]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 max-w-[64ch] font-serif text-[1rem] leading-[1.65] text-ink-soft">
+                    {item.body}
+                  </p>
                 </div>
-            </section>
+              </li>
+            ))}
+          </ol>
+        </Section>
 
-            {/* Comparison Section */}
-            <section className="py-20 bg-muted/50">
-                <div className="container">
-                    <div className="mx-auto max-w-2xl text-center">
-                        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                            How does Flux compare?
-                        </h2>
-                        <p className="mt-4 text-muted-foreground">
-                            See how Flux stacks up against other popular package managers.
-                        </p>
-                    </div>
-                    <div className="mx-auto mt-16 max-w-4xl">
-                        <Tabs defaultValue="npm" value={tab} onValueChange={setTab}>
-                            <TabsList className="grid w-full grid-cols-3">
-                                <TabsTrigger value="npm">npm</TabsTrigger>
-                                <TabsTrigger value="yarn">yarn</TabsTrigger>
-                                <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="npm" className="mt-6">
-                                <div className="rounded-lg border bg-card shadow-sm">
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold">Flux vs npm</h3>
-                                        <p className="mt-2 text-muted-foreground">
-                                            Flux outperforms npm in speed, disk usage, and developer
-                                            experience.
-                                        </p>
-                                        <div className="mt-6 space-y-4">
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">5x faster installation</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Parallel downloads and optimized dependency
-                                                        resolution.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">40% less disk space</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Efficient storage of packages with content-addressable
-                                                        storage.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Built-in security features</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Automatic vulnerability scanning and license
-                                                        compliance.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="yarn" className="mt-6">
-                                <div className="rounded-lg border bg-card shadow-sm">
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold">Flux vs Yarn</h3>
-                                        <p className="mt-2 text-muted-foreground">
-                                            Flux offers improvements over Yarn with better caching and simpler
-                                            workflows.
-                                        </p>
-                                        <div className="mt-6 space-y-4">
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">2x faster installation</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        More efficient dependency resolution algorithm.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Simpler lockfile format</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Human-readable and git-friendly lockfiles.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Better monorepo support</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        First-class support for monorepos without additional
-                                                        tools.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="pnpm" className="mt-6">
-                                <div className="rounded-lg border bg-card shadow-sm">
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-semibold">Flux vs pnpm</h3>
-                                        <p className="mt-2 text-muted-foreground">
-                                            Flux builds on pnpm's innovations with improved developer
-                                            experience.
-                                        </p>
-                                        <div className="mt-6 space-y-4">
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Similar disk efficiency</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Both use content-addressable storage for packages.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Better CLI experience</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        More intuitive commands and better error messages.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start gap-2">
-                                                <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                                <div>
-                                                    <p className="font-medium">Advanced plugin system</p>
-                                                    <p className="text-sm text-muted-foreground">
-                                                        Extensible architecture with a rich ecosystem of
-                                                        plugins.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </TabsContent>
-                        </Tabs>
-                    </div>
-                </div>
-            </section>
+        {/* ------------------------------------------------------- 05 roadmap */}
+        <Section
+          id="roadmap"
+          n="05"
+          title="What comes next."
+          lede="Roughly in the order it matters. None of it is done yet, which is what the empty boxes mean."
+        >
+          <ul className="max-w-[46rem]">
+            {roadmap.map((item) => (
+              <li key={item} className="flex items-baseline gap-4 border-b border-rule py-3.5">
+                <span aria-hidden className="font-mono text-[0.9rem] text-ink-faint">
+                  &#9633;
+                </span>
+                <span className="font-serif text-[1.05rem] leading-[1.6]">{item}</span>
+              </li>
+            ))}
+          </ul>
 
-            {/* CTA Section */}
-            <section className="py-20">
-                <div className="container">
-                    <div className="mx-auto max-w-4xl rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-background p-8 md:p-12">
-                        <div className="mx-auto max-w-2xl text-center">
-                            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                                Ready to get started?
-                            </h2>
-                            <p className="mt-4 text-muted-foreground">
-                                Join thousands of developers who are already using Flux to speed up their
-                                workflows.
-                            </p>
-                            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                                <Button size="lg" asChild>
-                                    <Link href="https://fluxdocs.gautamsuthar.in/">
-                                        Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Link>
-                                </Button>
-                                <Button size="lg" variant="outline">
-                                    View on GitHub
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    );
+          <div className="mt-14 max-w-[58ch]">
+            <Label>contributing</Label>
+            <p className="font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+              Open tasks and known bugs sit in the{' '}
+              <TextLink href={site.links.issues} external>
+                issues tab
+              </TextLink>
+              . Fork the repository, make your change, then run{' '}
+              <code className="font-mono text-[0.85em] text-ink">pnpm typecheck</code> and{' '}
+              <code className="font-mono text-[0.85em] text-ink">pnpm build</code> before you open a
+              pull request. The{' '}
+              <TextLink href={site.links.contributing} external>
+                contributing guide
+              </TextLink>{' '}
+              has the longer version.
+            </p>
+          </div>
+        </Section>
+      </main>
+
+      <SiteFooter />
+    </>
+  );
 }

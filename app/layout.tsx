@@ -1,40 +1,54 @@
-import type React from "react";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-import "@/app/globals.css";
-import { Analytics } from "@vercel/analytics/next";
+import type { Metadata, Viewport } from 'next';
+import { JetBrains_Mono, Newsreader } from 'next/font/google';
+import { site } from '@/lib/site';
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const newsreader = Newsreader({
+  variable: '--font-newsreader',
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
 
-export const metadata = {
-    title: "Flux | Modern Package Manager",
-    description: "A fast, simple, and innovative package manager for modern web development",
-    generator: "v0.dev",
+const jetbrains = JetBrains_Mono({
+  variable: '--font-jetbrains',
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: `${site.name} · ${site.tagline}`,
+    template: `%s · ${site.name}`,
+  },
+  description: site.description,
+  keywords: ['package manager', 'npm', 'cli', 'node', 'javascript', 'flux'],
+  authors: [{ name: site.author, url: site.links.author }],
+  creator: site.author,
+  openGraph: {
+    type: 'website',
+    title: `${site.name} · ${site.tagline}`,
+    description: site.description,
+    siteName: site.name,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${site.name} · ${site.tagline}`,
+    description: site.description,
+  },
 };
 
-export default function RootLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
-    return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={inter.className}>
-                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-                    <div className="flex min-h-screen flex-col">
-                        <Navbar />
-                        <main className="flex-1">
-                            {children}
-                            <Analytics />
-                        </main>
-                        <Footer />
-                    </div>
-                </ThemeProvider>
-            </body>
-        </html>
-    );
-}
+export const viewport: Viewport = {
+  themeColor: '#f4f1ea',
+};
 
-import "./globals.css";
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+  return (
+    <html
+      lang="en"
+      className={`${newsreader.variable} ${jetbrains.variable} h-full antialiased`}
+    >
+      <body className="flex min-h-full flex-col">{children}</body>
+    </html>
+  );
+}

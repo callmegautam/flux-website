@@ -1,83 +1,36 @@
-# **Flux Website – Official Docs & Registry Portal**
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-This is the official website repository for **Flux**, a minimal and evolving JavaScript package manager. The site serves as the **central hub** for Flux documentation, community updates, package browsing, and developer onboarding.
+## Getting Started
 
-🌐 **Live Site**: [flux.gautamsuthar.in](https://flux.gautamsuthar.in)
-📦 **Flux CLI Repo**: [callmegautam/flux](https://github.com/callmegautam/flux)
+First, run the development server:
 
----
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## **📚 What This Repo Contains**
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This repository powers the **Flux Website**, which includes:
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
--   📖 **Documentation** – Usage guides, CLI reference, and contribution instructions.
--   🔍 **Package Listings** – Browse published Flux packages and view metadata.
--   👥 **Community & Contributor Guide** – How to contribute to the CLI or web platform.
--   📰 **Announcements** – Release notes and dev blog (coming soon).
--   🛠️ **Admin Tools** – Internal dashboard and management tools (for maintainers).
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
----
+## Learn More
 
-## **🚀 Features**
+To learn more about Next.js, take a look at the following resources:
 
--   **Homepage with Overview** – Introduction to Flux and its philosophy.
--   **Searchable Package Registry** – Find, filter, and explore packages published to Flux.
--   **Interactive CLI Docs** – Learn how to use every Flux command.
--   **Developer Portal** – Publish packages, manage your profile (coming soon).
--   **Admin Dashboard** – View submissions, reports, and user analytics (internal).
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
----
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## **📦 Package Management System (Flux CLI)**
+## Deploy on Vercel
 
-This website complements the Flux CLI, which handles installation, removal, listing, updating, and searching for packages.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-For CLI-specific development, visit the [Flux CLI Repository](https://github.com/callmegautam/flux).
-
----
-
-## **🤝 Contributing**
-
-We’d love your help in improving the website!
-
-1. Fork the repo
-2. Create a feature branch
-3. Make your changes
-4. Open a Pull Request with clear description
-
-Contributions can include:
-
--   UI/UX improvements
--   Docs and content updates
--   Bug fixes
--   Feature additions (search, filters, dashboards, etc.)
-
----
-
-## **📌 Coming Soon**
-
--   🧾 **Publish packages via website**
--   📊 **Insights for package maintainers**
--   🔐 **Private package support**
--   🌐 **Custom registries**
--   📬 **Newsletter + blog integration**
-
----
-
-## **📜 License**
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## **💬 Stay Connected**
-
-Join us on our journey to redefine JavaScript package management:
-
--   🌐 Official Website: [Coming Soon]
--   🐙 GitHub: [callmegautam/flux](https://github.com/callmegautam/flux)
--   📰 Newsletter: [Coming Soon]
--   📢 Twitter: [@iamgautamsuthar](https://twitter.com/iamgautamsuthar)
--   📧 Email: [gautam.suthar@gmail.com](mailto:iamgautamsuthar@gmail.com)
--   🧠 Discussions: [Coming Soon]
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
