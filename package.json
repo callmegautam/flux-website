@@ -2,11 +2,33 @@
   "name": "flux-website",
   "version": "0.1.0",
   "private": true,
+  "description": "Marketing site and documentation for flux, an open source package manager for JavaScript.",
+  "author": "Gautam Suthar <iamgautamsuthar@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/callmegautam/flux",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/callmegautam/flux-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/callmegautam/flux-website/issues"
+  },
+  "keywords": [
+    "flux",
+    "package-manager",
+    "nextjs",
+    "website",
+    "documentation"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "next": "16.3.4",
@@ -22,6 +44,5 @@
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "packageManager": "pnpm@11.15.0"
+  }
 }
