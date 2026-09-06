@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------
-   flux. printed-manual specimen. light only, on purpose.
-   --------------------------------------------------------------- */
 @theme {
   --color-paper: #f4f1ea;
   --color-paper-deep: #eae5d9;
@@ -42,7 +39,6 @@ body {
   outline-offset: 3px;
 }
 
-/* book-index dot leader: a dotted baseline that eats the slack */
 .leader {
   flex: 1 1 auto;
   min-width: 1.5rem;
@@ -51,7 +47,6 @@ body {
   border-bottom: 1px dotted var(--color-rule);
 }
 
-/* small caps-ish mono label used throughout the margins */
 .tag {
   font-family: var(--font-jetbrains), ui-monospace, monospace;
   font-size: 0.66rem;

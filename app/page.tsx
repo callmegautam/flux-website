@@ -1,94 +1,134 @@
 import { CommandLine } from '@/components/command-line';
 import { Masthead } from '@/components/masthead';
 import { NavRail } from '@/components/nav-rail';
-import { Label, Leader, Section, TextLink, Wrap } from '@/components/primitives';
+import { Label, Section, TextLink, Wrap } from '@/components/primitives';
 import { SiteFooter } from '@/components/site-footer';
-import {
-  cachePaths,
-  commands,
-  envVars,
-  limitations,
-  roadmap,
-  site,
-  targets,
-} from '@/lib/site';
+import { nav, pitch, site } from '@/lib/site';
+import { compact, getStats } from '@/lib/stats';
 
-export default function Home() {
+export const revalidate = 21600;
+
+export default async function Home() {
+  const stats = await getStats();
+
   return (
     <>
       <div id="top">
-        <Masthead />
+        <Masthead stats={stats} />
       </div>
 
-      <NavRail />
+      <NavRail items={nav} />
 
-      {/* ------------------------------------------------ opening statement */}
       <section>
         <Wrap className="grid gap-x-10 gap-y-8 py-16 md:grid-cols-[7rem_1fr] md:py-20">
-          <p className="tag md:sticky md:top-16 md:self-start">abstract</p>
+          <p className="tag md:sticky md:top-16 md:self-start">why flux</p>
 
-          <div>
-            <p className="max-w-[38ch] font-serif text-[1.6rem] leading-[1.35] tracking-[-0.01em] sm:text-[2rem]">
-              Flux pulls packages off the npm registry, unpacks them into{' '}
-              <span className="font-mono text-[0.78em] text-red">node_modules</span>, and records
-              them in your <span className="font-mono text-[0.78em] text-red">package.json</span>.
-            </p>
-
-            <p className="mt-7 max-w-[56ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
-              Ten commands cover the entire surface. There is no plugin system, no config file, and
-              nothing to learn past what you already know from npm. It runs on Node 18 or later, or
-              as a single binary with no runtime at all.
-            </p>
-
-            <div className="mt-10 max-w-[34rem]">
-              <Label>install it</Label>
-              <CommandLine command={`npm install -g ${site.pkg}`} />
-            </div>
-
-            <aside className="mt-12 max-w-[52ch] border-l-2 border-red pl-6">
-              <p className="tag mb-2 text-red">caution</p>
-              <p className="font-serif text-[1rem] italic leading-[1.65] text-ink-soft">
-                Flux is alpha software and is not ready for production. It installs direct
-                dependencies only, with no dependency tree and no lockfile. Read{' '}
-                <TextLink href="#limits">§ 04</TextLink> before you depend on it.
-              </p>
-            </aside>
+          <div className="grid gap-10 sm:grid-cols-3 sm:gap-x-8">
+            {pitch.map((item) => (
+              <div key={item.title} className="border-t border-ink pt-4">
+                <h2 className="max-w-[16ch] font-serif text-[1.35rem] leading-[1.2] tracking-[-0.015em]">
+                  {item.title}
+                </h2>
+                <p className="mt-3 font-serif text-[1rem] leading-[1.65] text-ink-soft">
+                  {item.body}
+                </p>
+              </div>
+            ))}
           </div>
         </Wrap>
       </section>
 
-      {/* ------------------------------------------------------ specimen strip */}
-      <div className="border-y border-ink bg-paper-deep">
-        <Wrap className="py-5">
-          <p className="tag mb-3">the complete command set</p>
-          <p className="font-mono text-[0.95rem] leading-[2] tracking-[-0.01em] sm:text-[1.15rem]">
-            {commands.map((cmd, i) => (
-              <span key={cmd.name}>
-                {i > 0 ? <span className="mx-2.5 text-red sm:mx-3.5">·</span> : null}
-                {cmd.name}
-              </span>
-            ))}
-          </p>
-        </Wrap>
-      </div>
-
       <main>
-        {/* ------------------------------------------------------- 01 install */}
+        <Section
+          id="speed"
+          n="01"
+          title="Installing a package should not be something you wait through."
+          lede="Flux does the one job a package manager has, and skips almost everything the older clients accumulated on the way here."
+        >
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-x-14">
+            <div>
+              <p className="max-w-[52ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+                Every tarball you have ever pulled is kept once, per user, in a shared cache, so a
+                second project asking for the same package copies it out of your disk rather than
+                off the network. There is no plugin pipeline to boot, no lifecycle machinery to
+                walk, and no store to reconcile before the first byte moves.
+              </p>
+              <p className="mt-5 max-w-[52ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+                The result is a client that starts instantly and finishes quickly, on a cold cache
+                and on a warm one alike.
+              </p>
+            </div>
+
+            <div>
+              <Label>the whole install</Label>
+              <CommandLine command="flux install express" />
+              <CommandLine command="flux install" />
+              <p className="mt-4 max-w-[46ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
+                Same shape as the commands you already type. If you know npm, there is nothing here
+                to learn, and the <TextLink href="/docs">documentation</TextLink> is a reference,
+                not a course.
+              </p>
+            </div>
+          </div>
+
+          <aside className="mt-12 max-w-[54ch] border-l-2 border-red pl-6">
+            <p className="tag mb-2 text-red">honest note</p>
+            <p className="font-serif text-[1rem] italic leading-[1.65] text-ink-soft">
+              Flux is alpha. It installs direct dependencies only, with no dependency tree and no
+              lockfile yet, so it is not ready to run your production build.{' '}
+              <TextLink href="/docs#limits">What it does not do yet</TextLink> is written out in
+              full.
+            </p>
+          </aside>
+        </Section>
+
+        <Section
+          id="open-source"
+          n="02"
+          title="Open source, and open in the way that matters."
+          lede="MIT licensed, built in public, no telemetry and no account. What you install is what you can read."
+        >
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-x-14">
+            <p className="max-w-[54ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+              A package manager sits between you and every line of code you ship, which is a strange
+              place for a black box. Flux is a few thousand lines of TypeScript you can read in an
+              afternoon, released under {site.license}, with every binary built from the same public
+              repository. Nothing phones home, nothing asks you to sign in, and nothing is held back
+              for a paid tier.
+            </p>
+
+            <div className="lg:min-w-[16rem]">
+              <Label>the repository</Label>
+              {stats.stars !== null ? (
+                <p className="font-serif text-[3rem] leading-none tracking-[-0.03em]">
+                  {compact(stats.stars)}
+                  <span className="ml-3 align-middle font-mono text-[0.7rem] tracking-[0.16em] text-ink-faint">
+                    STARS
+                  </span>
+                </p>
+              ) : null}
+              <p className="mt-4 font-serif text-[1rem] leading-[1.6] text-ink-soft">
+                <TextLink href={site.links.github} external>
+                  callmegautam/flux
+                </TextLink>{' '}
+                carries the source, the issues and every release.
+              </p>
+            </div>
+          </div>
+        </Section>
+
         <Section
           id="install"
-          n="01"
-          title="Two ways in."
+          n="03"
+          title="Two ways in, both one line."
           lede="Take the npm package if Node is already on the machine. Take the standalone binary if you would rather not carry a runtime around."
         >
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-x-14">
             <div>
               <Label>a · global npm package</Label>
               <CommandLine command={`npm install -g ${site.pkg}`} />
-              <CommandLine command={`npx ${site.pkg} --help`} />
               <p className="mt-4 max-w-[46ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
-                Requires Node 18 or later. To update, run the same command again. To remove it, run{' '}
-                <code className="font-mono text-[0.85em] text-ink">npm uninstall -g {site.pkg}</code>
-                .
+                Requires Node 18 or later.
               </p>
             </div>
 
@@ -101,198 +141,15 @@ export default function Home() {
               />
               <p className="mt-4 max-w-[46ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
                 Self contained, no Node needed. Linux and macOS take the curl script, Windows
-                PowerShell takes <code className="font-mono text-[0.85em] text-ink">irm</code>. The
-                Windows install is per user and needs no administrator rights. To remove it, delete
-                the binary.
+                PowerShell takes <code className="font-mono text-[0.85em] text-ink">irm</code>.
               </p>
             </div>
           </div>
 
-          <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-x-14">
-            <div>
-              <Label>prebuilt targets</Label>
-              <ul>
-                {targets.map((t) => (
-                  <li key={t.id} className="border-b border-rule py-3">
-                    <div className="flex items-baseline">
-                      <code className="font-mono text-[0.85rem] text-ink">{t.id}</code>
-                      <Leader />
-                      <span className="font-serif text-[0.95rem] text-ink-soft">
-                        {t.platform}, {t.arch}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 max-w-[48ch] font-serif text-[0.98rem] leading-[1.65] text-ink-soft">
-                Every{' '}
-                <TextLink href={site.links.releases} external>
-                  release
-                </TextLink>{' '}
-                carries these binaries next to a{' '}
-                <code className="font-mono text-[0.85em] text-ink">SHA256SUMS</code> file, which
-                both install scripts verify for you.
-              </p>
-            </div>
-
-            <div>
-              <Label>environment</Label>
-              <dl>
-                {envVars.map((v) => (
-                  <div key={v.name} className="border-b border-rule py-3.5">
-                    <dt className="font-mono text-[0.82rem] text-red">{v.name}</dt>
-                    <dd className="mt-1.5 max-w-[44ch] font-serif text-[0.98rem] leading-[1.6] text-ink-soft">
-                      {v.note}{' '}
-                      <span className="text-ink-faint">
-                        Defaults to <span className="font-mono text-[0.85em]">{v.fallback}</span>.
-                      </span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
-        </Section>
-
-        {/* ------------------------------------------------------ 02 commands */}
-        <Section
-          id="commands"
-          n="02"
-          title="Ten commands, and that is all of them."
-          lede="Listed roughly in the order you reach for them. Every alias is shown on the right. Run flux --help for the full set of flags."
-        >
-          <ol>
-            {commands.map((cmd, i) => (
-              <li
-                key={cmd.name}
-                className="grid gap-x-6 border-b border-rule py-5 md:grid-cols-[2.5rem_1fr]"
-              >
-                <span className="hidden font-mono text-[0.75rem] leading-[1.9] text-ink-faint md:block">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-
-                <div>
-                  <div className="flex items-baseline">
-                    <code className="whitespace-nowrap font-mono text-[1rem] font-medium text-ink">
-                      {cmd.name}
-                      {cmd.args ? (
-                        <span className="font-normal text-ink-faint"> {cmd.args}</span>
-                      ) : null}
-                    </code>
-                    <Leader />
-                    <span className="whitespace-nowrap font-mono text-[0.72rem] text-ink-faint">
-                      {cmd.aliases.join(' , ')}
-                    </span>
-                  </div>
-                  <p className="mt-2 max-w-[62ch] font-serif text-[1rem] leading-[1.6] text-ink-soft">
-                    {cmd.desc}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          <p className="mt-8 max-w-[56ch] border-l-2 border-red pl-6 font-serif text-[1rem] leading-[1.65] text-ink-soft">
-            Pass <code className="font-mono text-[0.85em] text-ink">--flux</code> to{' '}
-            <code className="font-mono text-[0.85em] text-ink">install</code> to resolve tarballs
-            through the Flux registry instead of npm.
+          <p className="mt-10 max-w-[52ch] font-serif text-[1.05rem] leading-[1.7] text-ink-soft">
+            Prebuilt targets, checksums, the cache location and every command are in the{' '}
+            <TextLink href="/docs">documentation</TextLink>.
           </p>
-        </Section>
-
-        {/* -------------------------------------------------------- 03 config */}
-        <Section
-          id="config"
-          n="03"
-          title="One cache directory. Nothing else to configure."
-          lede="Downloaded tarballs are kept per user, in the place your platform expects them."
-        >
-          <div className="max-w-[46rem]">
-            <Label>cache location</Label>
-            <ul>
-              {cachePaths.map((row) => (
-                <li key={row.platform} className="border-b border-rule py-3">
-                  <div className="flex flex-wrap items-baseline">
-                    <span className="font-serif text-[1rem] text-ink">{row.platform}</span>
-                    <Leader />
-                    <code className="font-mono text-[0.8rem] text-ink-soft">{row.path}</code>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            <p className="mt-5 max-w-[52ch] font-serif text-[1rem] leading-[1.65] text-ink-soft">
-              Set <code className="font-mono text-[0.85em] text-red">FLUX_CACHE_DIR</code> to put
-              them somewhere else, and run{' '}
-              <code className="font-mono text-[0.85em] text-ink">flux clear</code> to empty the
-              cache.
-            </p>
-          </div>
-        </Section>
-
-        {/* --------------------------------------------------- 04 limitations */}
-        <Section
-          id="limits"
-          n="04"
-          title="What Flux does not do yet."
-          lede="Written out plainly, so you can decide whether that is fine for what you are building."
-        >
-          <ol className="max-w-[62rem]">
-            {limitations.map((item, i) => (
-              <li
-                key={item.title}
-                className="grid gap-x-6 gap-y-2 border-b border-rule py-6 md:grid-cols-[2.5rem_1fr]"
-              >
-                <span className="font-mono text-[0.75rem] leading-[1.9] text-red">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <h3 className="font-serif text-[1.25rem] leading-snug tracking-[-0.01em]">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1.5 max-w-[64ch] font-serif text-[1rem] leading-[1.65] text-ink-soft">
-                    {item.body}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </Section>
-
-        {/* ------------------------------------------------------- 05 roadmap */}
-        <Section
-          id="roadmap"
-          n="05"
-          title="What comes next."
-          lede="Roughly in the order it matters. None of it is done yet, which is what the empty boxes mean."
-        >
-          <ul className="max-w-[46rem]">
-            {roadmap.map((item) => (
-              <li key={item} className="flex items-baseline gap-4 border-b border-rule py-3.5">
-                <span aria-hidden className="font-mono text-[0.9rem] text-ink-faint">
-                  &#9633;
-                </span>
-                <span className="font-serif text-[1.05rem] leading-[1.6]">{item}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-14 max-w-[58ch]">
-            <Label>contributing</Label>
-            <p className="font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
-              Open tasks and known bugs sit in the{' '}
-              <TextLink href={site.links.issues} external>
-                issues tab
-              </TextLink>
-              . Fork the repository, make your change, then run{' '}
-              <code className="font-mono text-[0.85em] text-ink">pnpm typecheck</code> and{' '}
-              <code className="font-mono text-[0.85em] text-ink">pnpm build</code> before you open a
-              pull request. The{' '}
-              <TextLink href={site.links.contributing} external>
-                contributing guide
-              </TextLink>{' '}
-              has the longer version.
-            </p>
-          </div>
         </Section>
       </main>
 

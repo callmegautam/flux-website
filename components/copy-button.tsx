@@ -20,7 +20,6 @@ export function CopyButton({ value }: { value: string }) {
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard unavailable: leave the label as it was */
     }
   }, [value]);
 

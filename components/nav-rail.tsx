@@ -1,21 +1,29 @@
-import { nav, site } from '@/lib/site';
+import Link from 'next/link';
+import { site } from '@/lib/site';
 import { Wrap } from './primitives';
 
-/* one line tall, mono, numbered. a running head rather than a navbar. */
-export function NavRail() {
+export function NavRail({
+  items,
+  numbered = false,
+}: {
+  items: readonly { href: string; label: string }[];
+  numbered?: boolean;
+}) {
   return (
     <div className="sticky top-0 z-30 border-b border-ink bg-paper">
       <Wrap className="flex items-center justify-between gap-6 py-2.5">
-        <a href="#top" className="font-serif text-[1.05rem] leading-none tracking-[-0.02em]">
+        <Link href="/" className="font-serif text-[1.05rem] leading-none tracking-[-0.02em]">
           flux
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {nav.map((item, i) => (
-            <a key={item.href} href={item.href} className="tag hover:text-red">
-              <span className="text-red">{String(i + 1).padStart(2, '0')}</span>{' '}
+          {items.map((item, i) => (
+            <Link key={item.href} href={item.href} className="tag hover:text-red">
+              {numbered ? (
+                <span className="text-red">{String(i + 1).padStart(2, '0')} </span>
+              ) : null}
               <span className="tracking-[0.12em]">{item.label}</span>
-            </a>
+            </Link>
           ))}
         </nav>
 

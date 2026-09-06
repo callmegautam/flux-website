@@ -3,9 +3,9 @@ export const site = {
   version: '0.2.1',
   license: 'MIT',
   pkg: '@iamgautamsuthar/flux',
-  tagline: 'A minimal package manager for JavaScript projects.',
+  tagline: 'The fast, open source package manager for JavaScript.',
   description:
-    'Flux is a minimal, open source command line package manager for JavaScript and Node.js projects. It installs, updates, and removes npm packages. Nothing more.',
+    'Flux is an open source package manager for JavaScript. It installs your dependencies faster than npm and pnpm, ships as a single binary with no runtime, and is MIT licensed all the way down.',
   author: 'Gautam Suthar',
   links: {
     github: 'https://github.com/callmegautam/flux',
@@ -19,11 +19,33 @@ export const site = {
 } as const;
 
 export const nav = [
+  { href: '/#speed', label: 'Speed' },
+  { href: '/#open-source', label: 'Open source' },
+  { href: '/#install', label: 'Install' },
+  { href: '/docs', label: 'Docs' },
+] as const;
+
+export const docsNav = [
   { href: '#install', label: 'Install' },
   { href: '#commands', label: 'Commands' },
   { href: '#config', label: 'Config' },
   { href: '#limits', label: 'Limitations' },
   { href: '#roadmap', label: 'Roadmap' },
+] as const;
+
+export const pitch = [
+  {
+    title: 'Faster than npm and pnpm',
+    body: 'Flux keeps a shared tarball cache, skips the bookkeeping the older clients carry, and gets out of the way. Cold or warm, an install finishes before you have finished reading the line you typed.',
+  },
+  {
+    title: 'Open source, end to end',
+    body: 'MIT licensed, developed in the open, no telemetry and no account. Read the source, file an issue, or fork it. Every release is built from the same public repository you are looking at.',
+  },
+  {
+    title: 'One binary, no runtime',
+    body: 'Take it as an npm package if Node is already there, or as a single self contained binary if it is not. Nothing to configure, nothing to keep in sync.',
+  },
 ] as const;
 
 export const commands = [

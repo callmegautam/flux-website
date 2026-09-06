@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-/* the measure. everything sits inside this, rules go full bleed outside it. */
 export function Wrap({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-[70rem] px-5 sm:px-10 ${className}`}>{children}</div>;
 }
@@ -15,11 +15,6 @@ export function Rule({ weight = 'hair' }: { weight?: 'hair' | 'ink' }) {
   );
 }
 
-/*
-  the signature grid: a narrow margin column that holds the section numeral,
-  and a wide column that holds everything else. the numeral sticks while you
-  read the section, the way a running head sits on a printed page.
-*/
 export function Section({
   id,
   n,
@@ -56,7 +51,6 @@ export function Section({
   );
 }
 
-/* hanging mono label above a block, the way a manual labels a figure */
 export function Label({ children }: { children: ReactNode }) {
   return <p className="tag mb-3">{children}</p>;
 }
@@ -74,10 +68,21 @@ export function TextLink({
   children: ReactNode;
   external?: boolean;
 }) {
+  const className =
+    'underline decoration-rule decoration-1 underline-offset-[0.25em] transition-colors hover:decoration-red hover:text-red';
+
+  if (!external && href.startsWith('/')) {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  }
+
   return (
     <a
       href={href}
-      className="underline decoration-rule decoration-1 underline-offset-[0.25em] transition-colors hover:decoration-red hover:text-red"
+      className={className}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >
       {children}
