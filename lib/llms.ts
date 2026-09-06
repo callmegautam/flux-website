@@ -100,7 +100,7 @@ export function llmsFull(): string {
     '',
     ...commands.map(
       (c) =>
-        `- \`flux ${c.name}${c.args ? ` ${c.args}` : ''}\` (aliases: ${c.aliases.join(', ')}) — ${c.desc}`,
+        `- \`flux ${c.name}${c.args ? ` ${c.args}` : ''}\` (aliases: ${c.aliases.join(', ')}): ${c.desc}`,
     ),
     '',
     'Pass `--flux` to `install` to resolve tarballs through the Flux registry instead of npm.',
@@ -113,7 +113,7 @@ export function llmsFull(): string {
     '',
     '### Environment variables',
     '',
-    ...envVars.map((v) => `- \`${v.name}\` — ${v.note} Defaults to ${v.fallback}.`),
+    ...envVars.map((v) => `- \`${v.name}\`: ${v.note} Defaults to ${v.fallback}.`),
     '',
     '## Limitations',
     '',
