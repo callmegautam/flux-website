@@ -11,6 +11,7 @@ import {
   docsNav,
   envVars,
   limitations,
+  plainTextAlternates,
   roadmap,
   site,
   targets,
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
   description,
   alternates: {
     canonical: '/docs',
+    types: plainTextAlternates,
   },
   openGraph: {
     type: 'article',
@@ -30,12 +32,17 @@ export const metadata: Metadata = {
     title: `${site.name} documentation`,
     description,
     siteName: site.name,
-    locale: 'en_US',
+    locale: site.locale,
+    publishedTime: site.published,
+    authors: [site.author],
+    section: 'Documentation',
+    tags: [site.name, 'package manager', 'javascript', 'cli', 'documentation'],
     images: [
       {
         url: `${site.url}/docs/opengraph-image`,
         width: 1200,
         height: 630,
+        type: 'image/png',
         alt: `${site.name} documentation`,
       },
     ],
@@ -60,10 +67,13 @@ export default function Docs() {
           </p>
 
           <h1 className="mt-6 max-w-[14ch] font-serif text-[3.2rem] font-normal leading-[0.95] tracking-[-0.035em] sm:text-[4.5rem]">
-            Documentation
+            <span className="sr-only">flux </span>Documentation
           </h1>
 
-          <p className="mt-6 max-w-[54ch] pb-12 font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+          <p
+            data-speakable
+            className="mt-6 max-w-[54ch] pb-12 font-serif text-[1.08rem] leading-[1.7] text-ink-soft"
+          >
             Everything Flux {site.version} can do, written out once. Installation, the full command
             set, where the cache lives, and what is still missing.
           </p>

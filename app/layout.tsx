@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { JetBrains_Mono, Newsreader } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { site } from '@/lib/site';
+import { definition, plainTextAlternates, site } from '@/lib/site';
 import './globals.css';
 
 const newsreader = Newsreader({
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     default: title,
     template: `%s · ${site.name}`,
   },
-  description: site.description,
+  description: definition,
   applicationName: site.name,
   keywords: [
     'flux',
@@ -39,6 +39,10 @@ export const metadata: Metadata = {
     'cli',
     'node.js',
     'typescript',
+    'install packages faster',
+    'javascript dependency manager',
+    'single binary package manager',
+    'mit licensed package manager',
   ],
   authors: [{ name: site.author, url: site.links.author }],
   creator: site.author,
@@ -46,6 +50,7 @@ export const metadata: Metadata = {
   category: 'technology',
   alternates: {
     canonical: '/',
+    types: plainTextAlternates,
   },
   robots: {
     index: true,
@@ -64,30 +69,35 @@ export const metadata: Metadata = {
     title,
     description: site.description,
     siteName: site.name,
-    locale: 'en_US',
+    locale: site.locale,
   },
   twitter: {
     card: 'summary_large_image',
     title,
     description: site.description,
   },
-  icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/apple-icon', sizes: '180x180', type: 'image/png' }],
-  },
   manifest: '/manifest.webmanifest',
   formatDetection: { telephone: false },
+  referrer: 'origin-when-cross-origin',
+  other: {
+    // Plain, quotable facts for answer engines that read meta before they read prose.
+    'software:version': site.version,
+    'software:license': site.license,
+    'software:repository': site.links.github,
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: '#f4f1ea',
   colorScheme: 'light',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
-      lang="en"
+      lang={site.lang}
       data-scroll-behavior="smooth"
       className={`${newsreader.variable} ${jetbrains.variable} h-full antialiased`}
     >

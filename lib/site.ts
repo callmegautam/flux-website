@@ -4,7 +4,11 @@ export const site = {
   version: '0.2.1',
   license: 'MIT',
   pkg: '@iamgautamsuthar/flux',
-  tagline: 'The fast, open source package manager for JavaScript.',
+  repo: 'callmegautam/flux',
+  published: '2025-04-15',
+  locale: 'en_US',
+  lang: 'en',
+  tagline: 'the fast, open source package manager for JavaScript.',
   description:
     'Flux is an open source package manager for JavaScript. It installs your dependencies faster than npm and pnpm, ships as a single binary with no runtime, and is MIT licensed all the way down.',
   author: 'Gautam Suthar',
@@ -16,8 +20,35 @@ export const site = {
     contributing: 'https://github.com/callmegautam/flux/blob/main/docs/CONTRIBUTING.md',
     license: 'https://github.com/callmegautam/flux/blob/main/LICENSE',
     author: 'https://github.com/callmegautam',
+    authorSite: 'https://gautamsuthar.in',
+    installSh: 'https://raw.githubusercontent.com/callmegautam/flux/main/install.sh',
+    installPs1: 'https://raw.githubusercontent.com/callmegautam/flux/main/install.ps1',
   },
 } as const;
+
+// Answer engines quote definitions verbatim. Keep this one sentence, self contained
+// and free of pronouns, so it survives being lifted out of the page.
+export const definition =
+  'Flux is a free, open source, MIT licensed command line package manager for JavaScript and Node.js that installs packages from the npm registry faster than npm and pnpm, and ships both as an npm package and as a single self contained binary with no runtime.';
+
+/**
+ * Every page repeats this under `alternates`. Next replaces the whole `alternates`
+ * object when a page sets one, so a page that declares a canonical URL and omits
+ * this would silently drop the plain text links the layout added.
+ */
+export const plainTextAlternates = {
+  'text/plain': [
+    { url: '/llms.txt', title: `${site.name} for language models` },
+    { url: '/llms-full.txt', title: `${site.name}, full text` },
+  ],
+};
+
+export function slug(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
 export const nav = [
   { href: '/#speed', label: 'Speed' },

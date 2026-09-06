@@ -14,5 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
+    images: [`${site.url}${route.path === '/' ? '' : route.path}/opengraph-image`],
   }));
 }

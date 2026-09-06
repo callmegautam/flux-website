@@ -6,7 +6,7 @@ import { Label, Section, TextLink, Wrap } from '@/components/primitives';
 import { SiteFooter } from '@/components/site-footer';
 import { JsonLd } from '@/components/json-ld';
 import { homeSchema } from '@/lib/schema';
-import { faqs, nav, pitch, site } from '@/lib/site';
+import { definition, faqs, nav, pitch, plainTextAlternates, site, slug } from '@/lib/site';
 import { compact, getStats } from '@/lib/stats';
 
 export const revalidate = 21600;
@@ -15,9 +15,10 @@ const title = 'flux, the fast open source package manager for JavaScript';
 
 export const metadata: Metadata = {
   title,
-  description: site.description,
+  description: definition,
   alternates: {
     canonical: '/',
+    types: plainTextAlternates,
   },
   openGraph: {
     type: 'website',
@@ -25,12 +26,13 @@ export const metadata: Metadata = {
     title,
     description: site.description,
     siteName: site.name,
-    locale: 'en_US',
+    locale: site.locale,
     images: [
       {
         url: `${site.url}/opengraph-image`,
         width: 1200,
         height: 630,
+        type: 'image/png',
         alt: `${site.name}, ${site.tagline}`,
       },
     ],
@@ -198,7 +200,8 @@ export default async function Home() {
             {faqs.map((item, i) => (
               <div
                 key={item.q}
-                className="grid gap-x-6 gap-y-2 border-b border-rule py-6 md:grid-cols-[2.5rem_1fr]"
+                id={`faq-${slug(item.q)}`}
+                className="scroll-mt-24 grid gap-x-6 gap-y-2 border-b border-rule py-6 md:grid-cols-[2.5rem_1fr]"
               >
                 <span className="hidden font-mono text-[0.75rem] leading-[1.9] text-red md:block">
                   {String(i + 1).padStart(2, '0')}

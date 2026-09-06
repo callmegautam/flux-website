@@ -33,7 +33,10 @@ export function Masthead({ stats }: { stats: Stats }) {
           <span className="block">and get on with it.</span>
         </p>
 
-        <p className="mt-5 max-w-[54ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft">
+        <p
+          data-speakable
+          className="mt-5 max-w-[54ch] font-serif text-[1.08rem] leading-[1.7] text-ink-soft"
+        >
           Flux is a package manager for JavaScript that installs{' '}
           <span className="font-medium text-ink decoration-red decoration-2 underline underline-offset-[0.25em]">
             faster than npm and pnpm
