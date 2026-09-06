@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# flux-website
 
-## Getting Started
+The marketing site and documentation for [flux](https://github.com/callmegautam/flux), an open source package manager for JavaScript.
 
-First, run the development server:
+This repository holds the website only. The package manager itself lives in the [flux repository](https://github.com/callmegautam/flux).
+
+## Stack
+
+- Next.js 16 (App Router, React 19)
+- Tailwind CSS 4
+- TypeScript
+- Bun as the package manager and runner
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is then served at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script              | What it does                          |
+| ------------------- | ------------------------------------- |
+| `bun run dev`       | Start the development server           |
+| `bun run build`     | Build the production bundle            |
+| `bun run start`     | Serve the production build             |
+| `bun run lint`      | Run ESLint                             |
+| `bun run typecheck` | Type check with the TypeScript compiler |
 
-## Learn More
+## Layout
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/          routes: the landing page, /docs, the root layout and global styles
+components/   shared building blocks used by both pages
+lib/site.ts   all site copy and data in one place
+lib/stats.ts  live download and star counts from the npm and GitHub APIs
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Most content edits are a change to `lib/site.ts` rather than to a page.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Live data
 
-## Deploy on Vercel
+The landing page reads monthly downloads from the npm registry API and stars from the GitHub API. Both are fetched on the server and revalidated every six hours. If either API is unavailable the matching figure is hidden rather than shown as zero.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and the [code of conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
