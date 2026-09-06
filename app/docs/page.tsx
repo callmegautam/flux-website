@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { CommandLine } from '@/components/command-line';
+import { JsonLd } from '@/components/json-ld';
 import { NavRail } from '@/components/nav-rail';
 import { Label, Leader, Section, TextLink, Wrap } from '@/components/primitives';
 import { SiteFooter } from '@/components/site-footer';
+import { docsSchema } from '@/lib/schema';
 import {
   cachePaths,
   commands,
@@ -14,14 +16,43 @@ import {
   targets,
 } from '@/lib/site';
 
+const description = `Reference for ${site.name}: installation, every command and alias, the cache location, current limitations and what is planned next.`;
+
 export const metadata: Metadata = {
   title: 'Documentation',
-  description: `Reference for ${site.name}: installation, every command, configuration, current limitations and what is planned next.`,
+  description,
+  alternates: {
+    canonical: '/docs',
+  },
+  openGraph: {
+    type: 'article',
+    url: `${site.url}/docs`,
+    title: `${site.name} documentation`,
+    description,
+    siteName: site.name,
+    locale: 'en_US',
+    images: [
+      {
+        url: `${site.url}/docs/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${site.name} documentation`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${site.name} documentation`,
+    description,
+    images: [`${site.url}/docs/opengraph-image`],
+  },
 };
 
 export default function Docs() {
   return (
     <>
+      <JsonLd data={docsSchema()} />
+
       <header id="top" className="pt-10 sm:pt-14">
         <Wrap>
           <p className="tag">

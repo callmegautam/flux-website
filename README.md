@@ -41,6 +41,21 @@ lib/stats.ts  live download and star counts from the npm and GitHub APIs
 
 Most content edits are a change to `lib/site.ts` rather than to a page.
 
+## SEO routes
+
+The canonical domain is defined once, as `site.url` in `lib/site.ts`. Everything below derives from it, so a domain change is a one line edit.
+
+| Route | Source |
+| --- | --- |
+| `/sitemap.xml` | `app/sitemap.ts` |
+| `/robots.txt` | `app/robots.ts` |
+| `/manifest.webmanifest` | `app/manifest.ts` |
+| `/llms.txt` | `app/llms.txt/route.ts`, a plain text summary for LLM crawlers |
+| `/opengraph-image`, `/twitter-image`, `/docs/opengraph-image` | generated at build time by `lib/og.tsx` |
+| `/apple-icon` | `app/apple-icon.tsx` |
+
+JSON-LD graphs are built in `lib/schema.ts` and rendered by `components/json-ld.tsx`. The FAQ on the landing page and the `FAQPage` structured data both read the same `faqs` array in `lib/site.ts`, so they cannot drift apart.
+
 ## Live data
 
 The landing page reads monthly downloads from the npm registry API and stars from the GitHub API. Both are fetched on the server and revalidated every six hours. If either API is unavailable the matching figure is hidden rather than shown as zero.

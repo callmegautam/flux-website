@@ -1,18 +1,55 @@
+import type { Metadata } from 'next';
 import { CommandLine } from '@/components/command-line';
 import { Masthead } from '@/components/masthead';
 import { NavRail } from '@/components/nav-rail';
 import { Label, Section, TextLink, Wrap } from '@/components/primitives';
 import { SiteFooter } from '@/components/site-footer';
-import { nav, pitch, site } from '@/lib/site';
+import { JsonLd } from '@/components/json-ld';
+import { homeSchema } from '@/lib/schema';
+import { faqs, nav, pitch, site } from '@/lib/site';
 import { compact, getStats } from '@/lib/stats';
 
 export const revalidate = 21600;
+
+const title = 'flux, the fast open source package manager for JavaScript';
+
+export const metadata: Metadata = {
+  title,
+  description: site.description,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    url: site.url,
+    title,
+    description: site.description,
+    siteName: site.name,
+    locale: 'en_US',
+    images: [
+      {
+        url: `${site.url}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${site.name}, ${site.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description: site.description,
+    images: [`${site.url}/opengraph-image`],
+  },
+};
 
 export default async function Home() {
   const stats = await getStats();
 
   return (
     <>
+      <JsonLd data={homeSchema()} />
+
       <div id="top">
         <Masthead stats={stats} />
       </div>
@@ -150,6 +187,35 @@ export default async function Home() {
             Prebuilt targets, checksums, the cache location and every command are in the{' '}
             <TextLink href="/docs">documentation</TextLink>.
           </p>
+        </Section>
+        <Section
+          id="faq"
+          n="04"
+          title="Questions people ask before they install it."
+          lede="Short answers, with the longer version in the documentation."
+        >
+          <dl className="max-w-[62rem]">
+            {faqs.map((item, i) => (
+              <div
+                key={item.q}
+                className="grid gap-x-6 gap-y-2 border-b border-rule py-6 md:grid-cols-[2.5rem_1fr]"
+              >
+                <span className="hidden font-mono text-[0.75rem] leading-[1.9] text-red md:block">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <dt>
+                    <h3 className="font-serif text-[1.25rem] leading-snug tracking-[-0.01em]">
+                      {item.q}
+                    </h3>
+                  </dt>
+                  <dd className="mt-1.5 max-w-[64ch] font-serif text-[1rem] leading-[1.65] text-ink-soft">
+                    {item.a}
+                  </dd>
+                </div>
+              </div>
+            ))}
+          </dl>
         </Section>
       </main>
 

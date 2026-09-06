@@ -1,5 +1,6 @@
 export const site = {
   name: 'flux',
+  url: 'https://flux.gautamsuthar.in',
   version: '0.2.1',
   license: 'MIT',
   pkg: '@iamgautamsuthar/flux',
@@ -22,7 +23,43 @@ export const nav = [
   { href: '/#speed', label: 'Speed' },
   { href: '/#open-source', label: 'Open source' },
   { href: '/#install', label: 'Install' },
+  { href: '/#faq', label: 'FAQ' },
   { href: '/docs', label: 'Docs' },
+] as const;
+
+export const faqs = [
+  {
+    q: 'What is flux?',
+    a: 'Flux is an open source command line package manager for JavaScript and Node.js projects. It installs, updates, lists and removes packages from the npm registry, runs the scripts in your package.json, and ships either as an npm package or as a single self contained binary.',
+  },
+  {
+    q: 'Is flux faster than npm and pnpm?',
+    a: 'Yes. Flux keeps every downloaded tarball in one shared per user cache, so a second project asking for the same package copies it from disk instead of the network. It also starts with no plugin pipeline to boot and no store to reconcile, so the process begins working immediately.',
+  },
+  {
+    q: 'Is flux free and open source?',
+    a: 'Flux is MIT licensed and developed in the open at github.com/callmegautam/flux. It is free for personal and commercial use, there is no paid tier, no account to create, and no telemetry. Every published binary is built from the same public repository you can read.',
+  },
+  {
+    q: 'Is flux ready for production?',
+    a: 'Not yet. Flux is alpha software. It installs direct dependencies only, it does not walk the dependency tree, and it has no lockfile, so installs are not reproducible. Use it on side projects and experiments, and keep npm or pnpm for anything you ship.',
+  },
+  {
+    q: 'How do I install flux?',
+    a: 'With Node 18 or later already installed, run npm install -g @iamgautamsuthar/flux. Without Node, run the install script: curl -fsSL https://raw.githubusercontent.com/callmegautam/flux/main/install.sh | sh on Linux and macOS, or the matching irm command in PowerShell on Windows.',
+  },
+  {
+    q: 'Does flux need Node.js?',
+    a: 'Only if you install it from npm, where Node 18 or later is required. The standalone binary carries no runtime, so it works on a machine with no Node installed at all. Prebuilt binaries cover Linux, macOS and Windows on both Intel and ARM.',
+  },
+  {
+    q: 'Does flux replace npm?',
+    a: 'It aims to. Flux talks to the same npm registry, reads and writes the same package.json, and installs into the same node_modules directory, so a project stays compatible with every other client. Until dependency tree resolution and a lockfile land, treat it as a companion rather than a replacement.',
+  },
+  {
+    q: 'Where does flux cache packages?',
+    a: 'In your platform cache directory: $XDG_CACHE_HOME/flux or ~/.cache/flux on Linux, ~/Library/Caches/flux on macOS, and %LOCALAPPDATA%\\flux\\Cache on Windows. Set FLUX_CACHE_DIR to move it somewhere else, and run flux clear to empty it.',
+  },
 ] as const;
 
 export const docsNav = [
