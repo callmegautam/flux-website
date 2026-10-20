@@ -89,7 +89,7 @@ const application = {
   softwareRequirements:
     'Node.js 18 or later for the npm package, no runtime for the standalone binary',
   memoryRequirements: 'Negligible',
-  storageRequirements: 'A per user tarball cache in the platform cache directory',
+  storageRequirements: 'A per user metadata cache, tarball store and package store in the platform cache directory',
   featureList: commands.map((command) => `${command.name} ${command.desc}`.trim()),
   softwareHelp: { '@id': id('/docs#article') },
   author: { '@id': id('/#author') },
@@ -161,7 +161,9 @@ const commandList = {
     '@type': 'ListItem',
     position: i + 1,
     name: `flux ${command.name}${command.args ? ` ${command.args}` : ''}`,
-    description: `${command.desc} Aliases: ${command.aliases.join(', ')}.`,
+    description: command.aliases.length
+      ? `${command.desc} Aliases: ${command.aliases.join(', ')}.`
+      : command.desc,
     url: id('/docs#commands'),
   })),
 };

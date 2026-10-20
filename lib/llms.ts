@@ -77,9 +77,9 @@ export function llmsFull(): string {
     '',
     '## Status',
     '',
-    `${site.name} ${site.version} is alpha software. It installs direct dependencies only, does not walk`,
-    'the dependency tree, and has no lockfile, so installs are not reproducible. Use it on side',
-    'projects and experiments, and keep npm or pnpm for anything you ship.',
+    `${site.name} ${site.version} is alpha software. It resolves the full dependency tree into a shared`,
+    'store and writes flux-lock.json, but never runs lifecycle scripts and has no workspace support.',
+    'Use it on side projects and experiments, and keep npm or pnpm for anything you ship.',
     '',
     '## Why flux',
     '',
@@ -100,7 +100,7 @@ export function llmsFull(): string {
     '',
     ...commands.map(
       (c) =>
-        `- \`flux ${c.name}${c.args ? ` ${c.args}` : ''}\` (aliases: ${c.aliases.join(', ')}): ${c.desc}`,
+        `- \`flux ${c.name}${c.args ? ` ${c.args}` : ''}\`${c.aliases.length ? ` (aliases: ${c.aliases.join(', ')})` : ''}: ${c.desc}`,
     ),
     '',
     'Pass `--flux` to `install` to resolve tarballs through the Flux registry instead of npm.',

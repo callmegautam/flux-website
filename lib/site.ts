@@ -1,7 +1,7 @@
 export const site = {
   name: 'flux',
   url: 'https://flux.gautamsuthar.in',
-  version: '0.2.1',
+  version: '0.3.0',
   license: 'MIT',
   pkg: '@iamgautamsuthar/flux',
   repo: 'callmegautam/flux',
@@ -65,7 +65,7 @@ export const faqs = [
   },
   {
     q: 'Is flux faster than npm and pnpm?',
-    a: 'Yes. Flux keeps every downloaded tarball in one shared per user cache, so a second project asking for the same package copies it from disk instead of the network. It also starts with no plugin pipeline to boot and no store to reconcile, so the process begins working immediately.',
+    a: 'Yes. Flux keeps one content addressed store per user and hardlinks packages from it into node_modules, so a second project asking for the same package does no network, download or extraction work. With a matching flux-lock.json it skips resolution entirely and installs straight from the store.',
   },
   {
     q: 'Is flux free and open source?',
@@ -73,7 +73,7 @@ export const faqs = [
   },
   {
     q: 'Is flux ready for production?',
-    a: 'Not yet. Flux is alpha software. It installs direct dependencies only, it does not walk the dependency tree, and it has no lockfile, so installs are not reproducible. Use it on side projects and experiments, and keep npm or pnpm for anything you ship.',
+    a: 'Not yet. Flux is alpha software. It now resolves the full dependency tree and writes a lockfile, but it never runs lifecycle scripts, so packages that compile native code at install time will not work, and it has no workspace support. Use it on side projects and experiments, and keep npm or pnpm for anything you ship.',
   },
   {
     q: 'How do I install flux?',
@@ -85,11 +85,11 @@ export const faqs = [
   },
   {
     q: 'Does flux replace npm?',
-    a: 'It aims to. Flux talks to the same npm registry, reads and writes the same package.json, and installs into the same node_modules directory, so a project stays compatible with every other client. Until dependency tree resolution and a lockfile land, treat it as a companion rather than a replacement.',
+    a: 'It aims to. Flux talks to the same npm registry, reads and writes the same package.json, and installs into the same node_modules directory, so a project stays compatible with every other client. Until lifecycle scripts and workspaces land, treat it as a companion rather than a replacement.',
   },
   {
     q: 'Where does flux cache packages?',
-    a: 'In your platform cache directory: $XDG_CACHE_HOME/flux or ~/.cache/flux on Linux, ~/Library/Caches/flux on macOS, and %LOCALAPPDATA%\\flux\\Cache on Windows. Set FLUX_CACHE_DIR to move it somewhere else, and run flux clear to empty it.',
+    a: 'In your platform cache directory: $XDG_CACHE_HOME/flux or ~/.cache/flux on Linux, ~/Library/Caches/flux on macOS, and %LOCALAPPDATA%\\flux\\Cache on Windows. Set FLUX_CACHE_DIR to move it somewhere else, run flux cache info to see how much each layer uses, and flux cache clean --all to empty it.',
   },
 ] as const;
 
@@ -104,7 +104,7 @@ export const docsNav = [
 export const pitch = [
   {
     title: 'Faster than npm and pnpm',
-    body: 'Flux keeps a shared tarball cache, skips the bookkeeping the older clients carry, and gets out of the way. Cold or warm, an install finishes before you have finished reading the line you typed.',
+    body: 'Flux keeps a shared, content addressed package store, hardlinks from it instead of copying, and gets out of the way. Cold or warm, an install finishes before you have finished reading the line you typed.',
   },
   {
     title: 'Open source, end to end',
@@ -127,7 +127,7 @@ export const commands = [
     name: 'install',
     args: '[package]',
     aliases: ['add'],
-    desc: 'Install one package and record it in package.json, or install every dependency already listed there.',
+    desc: 'Install one package, optionally at a version or range, and record it in package.json, or install every dependency already listed there. Pass --save-dev to record it under devDependencies, or --offline to install only from the local store.',
   },
   {
     name: 'uninstall',
@@ -175,7 +175,13 @@ export const commands = [
     name: 'clear',
     args: '',
     aliases: ['c'],
-    desc: 'Delete the download cache.',
+    desc: 'Delete every cache layer.',
+  },
+  {
+    name: 'cache',
+    args: '<info|dir|clean>',
+    aliases: [],
+    desc: 'Show the size of each cache layer, print the cache location, or clean some or all of it.',
   },
 ] as const;
 
@@ -197,7 +203,17 @@ export const envVars = [
   {
     name: 'FLUX_CACHE_DIR',
     fallback: 'platform cache directory',
-    note: 'Where downloaded tarballs are kept.',
+    note: 'Where the metadata cache, tarballs and package store are kept.',
+  },
+  {
+    name: 'FLUX_NETWORK_CONCURRENCY',
+    fallback: '16',
+    note: 'Parallel metadata and tarball requests.',
+  },
+  {
+    name: 'FLUX_FS_CONCURRENCY',
+    fallback: '32',
+    note: 'Parallel filesystem link operations.',
   },
   {
     name: 'FLUX_VERSION',
@@ -213,29 +229,30 @@ export const envVars = [
 
 export const limitations = [
   {
-    title: 'Direct dependencies only',
-    body: 'Flux installs what is listed in your package.json. It does not walk the dependency tree, so most real packages will not work end to end.',
+    title: 'No lifecycle scripts',
+    body: 'preinstall, install and postinstall are never run, so packages that compile native code at install time will not work.',
   },
   {
-    title: 'No lockfile',
-    body: 'Installs are not reproducible. Two runs of the same project can resolve to different versions.',
+    title: 'Peers are not auto installed',
+    body: 'Peer dependencies are resolved, but you still have to add them to package.json yourself.',
   },
   {
-    title: 'No semver range resolution',
-    body: 'A range like ^1.2.3 is not resolved against. Flux installs whatever the registry currently publishes as latest.',
+    title: 'No workspaces',
+    body: 'Monorepos and workspace protocols are not supported yet.',
   },
   {
-    title: 'No test suite',
-    body: 'There is no automated coverage yet. Treat every release as unverified until you have tried it yourself.',
+    title: 'os and cpu are not enforced',
+    body: 'Platform specific packages install everywhere, whether or not they can run there.',
+  },
+  {
+    title: 'No store garbage collection',
+    body: 'The store only grows. Run flux cache clean to reclaim space.',
   },
 ] as const;
 
 export const roadmap = [
-  'Full dependency tree resolution',
-  'A lockfile, for reproducible installs',
   'Registry search from the CLI',
   'A dependency tree viewer',
-  'Parallel installs',
   'Workspace support',
   'Vulnerability scanning',
 ] as const;

@@ -113,8 +113,9 @@ export default async function Home() {
           <aside className="mt-12 max-w-[54ch] border-l-2 border-red pl-6">
             <p className="tag mb-2 text-red">honest note</p>
             <p className="font-serif text-[1rem] italic leading-[1.65] text-ink-soft">
-              Flux is alpha. It installs direct dependencies only, with no dependency tree and no
-              lockfile yet, so it is not ready to run your production build.{' '}
+              Flux is alpha. It resolves the full tree and writes a lockfile now, but it never runs
+              lifecycle scripts and has no workspaces yet, so it is not ready to run your production
+              build.{' '}
               <TextLink href="/docs#limits">What it does not do yet</TextLink> is written out in
               full.
             </p>
